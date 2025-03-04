@@ -176,7 +176,7 @@ def beehive_details_handler(call):
                 message_text += "  - Дані датчиків відсутні.\n"
 
             markup.add(types.InlineKeyboardButton('◀️Назад до пасіки◀️',
-                                                  callback_data=f'apiary_{beehive_details.get('apiaryId')}'))
+                                                  callback_data=f'apiary_{beehive_details.get('apiaryId')}'
             bot.send_message(call.message.chat.id, message_text, reply_markup=markup)
             bot.answer_callback_query(call.id)
 
