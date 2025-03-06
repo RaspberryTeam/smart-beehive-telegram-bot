@@ -9,17 +9,19 @@ WEBHOOK_URL = os.getenv("WEBHOOK_URL")
 
 app = Flask(__name__)
 
-# Головний маршрут для обробки запитів від Telegram
 @app.route("/webhook", methods=["POST"])
 def webhook():
     json_str = request.get_data().decode("UTF-8")
+    print("Отримано запит: ", json_str)  # Логування отриманого запиту
     update = types.Update.de_json(json_str)
     bot.process_new_updates([update])
     return "OK", 200
 
+
 # Встановлення вебхука
 @app.route("/set_webhook", methods=["GET"])
 def set_webhook():
+    # Встановлюємо вебхук на нову URL-адресу
     success = bot.set_webhook(url=f"{WEBHOOK_URL}/webhook")
     if success:
         return "Webhook встановлено!", 200
