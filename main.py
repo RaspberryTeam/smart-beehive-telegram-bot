@@ -91,7 +91,7 @@ SERVER_CREATE_APIARY = "https://smart-beehive-server.onrender.com/api/"
 app = Flask(__name__)
 
 # Головний маршрут для обробки запитів від Telegram
-@app.route(f"/{TOKEN}", methods=["POST"])
+@app.route(f"/{TOKEN}/", methods=["POST"])
 def webhook():
     json_str = request.get_data().decode("UTF-8")
     update = types.Update.de_json(json_str)
