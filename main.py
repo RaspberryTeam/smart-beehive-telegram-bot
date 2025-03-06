@@ -31,6 +31,7 @@ def set_webhook():
 # Обробник команди /start
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
+    print("Команда старт")
     chat_id = message.chat.id
     markup = types.InlineKeyboardMarkup()
 
