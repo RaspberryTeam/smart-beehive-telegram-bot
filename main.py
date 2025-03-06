@@ -107,6 +107,10 @@ def set_webhook():
     else:
         return "Помилка при встановленні вебхука", 400
 
+@app.route("/", methods=["GET"])
+def home():
+    return "Server is running", 200
+
 # Обробник команди /start
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
