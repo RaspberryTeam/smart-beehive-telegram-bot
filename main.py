@@ -85,6 +85,9 @@ from bot_config import bot
 TOKEN = os.getenv("BOT_TOKEN")
 WEBHOOK_URL = os.getenv("WEBHOOK_URL")
 
+SERVER_URL = "https://smart-beehive-server.onrender.com/getdata"
+SERVER_CREATE_APIARY = "https://smart-beehive-server.onrender.com/api/"
+
 app = Flask(__name__)
 
 # Головний маршрут для обробки запитів від Telegram
