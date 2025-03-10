@@ -33,7 +33,7 @@ def set_webhook():
 def send_welcome(message):
     
     chat_id = message.chat.id
-    markup = types.InlineKeyboardMarkup()
+    # markup = types.InlineKeyboardMarkup()
     bot.send_message(chat_id, "Ласкаво просимо!")
     # if get_token(chat_id) is None:
     #     markup.add(types.InlineKeyboardButton('Вхід', callback_data='login'))
