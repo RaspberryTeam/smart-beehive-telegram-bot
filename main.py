@@ -35,17 +35,17 @@ def send_welcome(message):
     chat_id = message.chat.id
     markup = types.InlineKeyboardMarkup()
     bot.send_message(chat_id, "Ласкаво просимо!")
-    if get_token(chat_id) is None:
-        markup.add(types.InlineKeyboardButton('Вхід', callback_data='login'))
-        markup.add(types.InlineKeyboardButton('Реєстрація', callback_data='registration'))
-    else:
-        if check_beehive_exists():
-            markup.add(types.InlineKeyboardButton('Переглянути пасіку', callback_data='view_apiary'))
-            markup.add(types.InlineKeyboardButton('Створити пасіку', callback_data='create_apiary'))
-        else:
-            markup.add(types.InlineKeyboardButton('Створити пасіку', callback_data='create_apiary'))
+    # if get_token(chat_id) is None:
+    #     markup.add(types.InlineKeyboardButton('Вхід', callback_data='login'))
+    #     markup.add(types.InlineKeyboardButton('Реєстрація', callback_data='registration'))
+    # else:
+    #     if check_beehive_exists():
+    #         markup.add(types.InlineKeyboardButton('Переглянути пасіку', callback_data='view_apiary'))
+    #         markup.add(types.InlineKeyboardButton('Створити пасіку', callback_data='create_apiary'))
+    #     else:
+    #         markup.add(types.InlineKeyboardButton('Створити пасіку', callback_data='create_apiary'))
 
-    bot.send_message(chat_id, "Ласкаво просимо!", reply_markup=markup)
+    # bot.send_message(chat_id, "Ласкаво просимо!", reply_markup=markup)
 
 # Обробка callback-кнопок
 @bot.callback_query_handler(func=lambda call: call.data in ['login', 'registration', 'create_apiary', 'view_apiary', 'back_in_menu'])
