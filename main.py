@@ -10,19 +10,14 @@ WEBHOOK_URL = os.getenv("WEBHOOK_URL")
 app = Flask(__name__)
 
 
-@app.route('/webhook', methods=['POST'])
-def webhook():
-    json_str = request.get_data().decode('UTF-8')
-    print("Отримано запит:", json_str)
-
-    try:
-        update = telebot.types.Update.de_json(json_str)
-        print("Update після de_json:", update)
-        bot.process_new_updates([update])
-    except Exception as e:
-        print("Помилка під час обробки оновлення:", e)
-
-    return 'OK', 200
+@app.route("/set_webhook", methods=["GET"])
+ def set_webhook():
+     # Встановлюємо вебхук на нову URL-адресу
+     success = bot.set_webhook(url=f"{WEBHOOK_URL}/webhook")
+     if success:
+         return "Webhook встановлено!", 200
+     else:
+         return "Помилка при встановленні вебхука", 400
 
 
 # @app.route("/webhook", methods=["POST"])
