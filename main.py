@@ -9,13 +9,23 @@ WEBHOOK_URL = os.getenv("WEBHOOK_URL")
 
 app = Flask(__name__)
 
-@app.route("/webhook", methods=["POST"])
+
+@app.route('/webhook', methods=['POST'])
 def webhook():
-    json_str = request.get_data().decode("UTF-8")
-    print("Отримано запит: ", json_str)  # Логування отриманого запиту
-    update = types.Update.de_json(json_str)
+    json_str = request.get_data().decode('UTF-8')
+    print("Отримано запит:", json_str)  # Дивимося, що приходить  
+    update = telebot.types.Update.de_json(json_str)
+    print("Update після de_json:", update)  # Перевіряємо, чи правильно розпарсився  
     bot.process_new_updates([update])
-    return "OK", 200
+    return 'OK', 200
+
+# @app.route("/webhook", methods=["POST"])
+# def webhook():
+#     json_str = request.get_data().decode("UTF-8")
+#     print("Отримано запит: ", json_str)  # Логування отриманого запиту
+#     update = types.Update.de_json(json_str)
+#     bot.process_new_updates([update])
+#     return "OK", 200
 
 @app.route("/set_webhook", methods=["GET"])
 def set_webhook():
