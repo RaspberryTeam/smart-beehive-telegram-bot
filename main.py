@@ -13,11 +13,17 @@ app = Flask(__name__)
 @app.route('/webhook', methods=['POST'])
 def webhook():
     json_str = request.get_data().decode('UTF-8')
-    print("Отримано запит:", json_str)  # Дивимося, що приходить  
-    update = types.Update.de_json(json_str)
-    print("Update після de_json:", update)  # Перевіряємо, чи правильно розпарсився  
-    bot.process_new_updates([update])
+    print("Отримано запит:", json_str)
+
+    try:
+        update = telebot.types.Update.de_json(json_str)
+        print("Update після de_json:", update)
+        bot.process_new_updates([update])
+    except Exception as e:
+        print("Помилка під час обробки оновлення:", e)
+
     return 'OK', 200
+
 
 # @app.route("/webhook", methods=["POST"])
 # def webhook():
