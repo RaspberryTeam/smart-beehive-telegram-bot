@@ -31,10 +31,10 @@ def set_webhook():
 # Обробник команди /start
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-    print("Команда старт")
+    
     chat_id = message.chat.id
     markup = types.InlineKeyboardMarkup()
-
+    bot.send_message(chat_id, "Ласкаво просимо!")
     if get_token(chat_id) is None:
         markup.add(types.InlineKeyboardButton('Вхід', callback_data='login'))
         markup.add(types.InlineKeyboardButton('Реєстрація', callback_data='registration'))
