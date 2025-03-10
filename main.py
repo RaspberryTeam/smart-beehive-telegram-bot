@@ -33,19 +33,23 @@ def webhook():
 #     bot.process_new_updates([update])
 #     return "OK", 200
 
-@app.route("/set_webhook", methods=["GET"])
-def set_webhook():
-    # Встановлюємо вебхук на нову URL-адресу
-    success = bot.set_webhook(url=f"{WEBHOOK_URL}/webhook")
-    if success:
-        return "Webhook встановлено!", 200
-    else:
-        return "Помилка при встановленні вебхука", 400
+@app.route('/webhook', methods=['POST'])
+def webhook():
+    json_str = request.get_data().decode('UTF-8')
+    update = telebot.types.Update.de_json(json_str)
+
+    if update.message and update.message.text == "/start":
+        print(f"Обробка вручну для {update.message.chat.id}")
+        bot.send_message(update.message.chat.id, "Ласкаво просимо!")
+
+    return 'OK', 200
+
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-    print("Отримано команду /start від:", message.chat.id)
+    print(f"send_welcome() викликано для {message.chat.id}")  # Лог у консолі
     bot.send_message(message.chat.id, "Ласкаво просимо!")
+
 
 # @bot.message_handler(commands=['start'])
 # def send_welcome(message):
