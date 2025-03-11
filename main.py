@@ -12,16 +12,13 @@ app = Flask(__name__)
 @app.route('/webhook', methods=['POST'])
 def webhook():
     json_str = request.get_data().decode('UTF-8')
+    print(f"📩 Отримано запит: {json_str}")  # Додаємо логування у Flask
+
     update = types.Update.de_json(json_str)
-
-    print("Отримано оновлення:", update)  # Додаємо логування
-
-    if update.message and update.message.text == "/start":
-        send_welcome(update.message)  # Викликаємо хендлер напряму
-
-    bot.process_new_updates([update])  # Запускаємо стандартну обробку
+    bot.process_new_updates([update])
 
     return 'OK', 200
+
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
