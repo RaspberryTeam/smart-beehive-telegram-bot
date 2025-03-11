@@ -15,7 +15,7 @@ app = Flask(__name__)
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
-    print(f"🔑 BOT_TOKEN: {TOKEN}")  # Лог для перевірки
+    print(f"🔑 BOT_TOKEN: {TOKEN}, webhook {WEBHOOK_URL}")  # Лог для перевірки
 
     print("🔥 Запит на /webhook отримано")
     try:
@@ -76,16 +76,11 @@ def callback_handler(call):
 
 
 if __name__ == "__main__":
+    print("✅ Запуск Flask-сервера...")
+
+    # Встановлення вебхука
     bot.remove_webhook()
-    print("🚀 Перехід в режим polling")
-    bot.infinity_polling()
+    bot.set_webhook(url=f"{WEBHOOK_URL}")
 
-# if __name__ == "__main__":
-#     print("✅ Запуск Flask-сервера...")
-
-#     # Встановлення вебхука
-#     bot.remove_webhook()
-#     bot.set_webhook(url=f"{WEBHOOK_URL}")
-
-#     # Запуск Flask
-#     app.run(host="0.0.0.0", port=10000, use_reloader=False)
+    # Запуск Flask
+    app.run(host="0.0.0.0", port=10000, use_reloader=False)
