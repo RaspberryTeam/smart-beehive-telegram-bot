@@ -28,6 +28,7 @@ def webhook():
         print("✅ Обробка оновлення...")  # Лог перед передачею оновлення в бот
         bot.process_new_updates([update])
         print(f"✅ Оновлення передано боту")
+        bot.send_chat_action(chat_id, "Привіт! Це тестове повідомлення.")
 
         return 'OK', 200
     except Exception as e:
