@@ -33,11 +33,11 @@ def webhook():
     json_str = request.get_data().decode('UTF-8')
     update = types.Update.de_json(json_str)
 
-    print("Отримано оновлення:", update)
-
-    bot.process_new_updates([update])  # Обробка через TeleBot
+    if update.message and update.message.text == "/start":
+        send_welcome(update.message)  # Викликати хендлер напряму
 
     return 'OK', 200
+
 
 # @bot.message_handler(commands=['start'])
 # def send_welcome(message):
