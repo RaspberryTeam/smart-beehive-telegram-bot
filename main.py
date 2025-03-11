@@ -35,26 +35,30 @@ def webhook():
         return 'Internal Server Error', 500
 
 
-
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-    print(f"🚀 Отримано команду /start від {message.chat.id}")
     chat_id = message.chat.id
-    markup = types.InlineKeyboardMarkup()
+    bot.send_message(chat_id, "Привіт! Це тестове повідомлення.")
+
+# @bot.message_handler(commands=['start'])
+# def send_welcome(message):
+#     print(f"🚀 Отримано команду /start від {message.chat.id}")
+#     chat_id = message.chat.id
+#     markup = types.InlineKeyboardMarkup()
     
-    bot.send_message(chat_id, "Ласкаво просимо!")
+#     bot.send_message(chat_id, "Ласкаво просимо!")
 
-    if get_token(chat_id) is None:
-        markup.add(types.InlineKeyboardButton('Вхід', callback_data='login'))
-        markup.add(types.InlineKeyboardButton('Реєстрація', callback_data='registration'))
-    else:
-        if check_beehive_exists(chat_id):  # Передаємо chat_id
-            markup.add(types.InlineKeyboardButton('Переглянути пасіку', callback_data='view_apiary'))
-            markup.add(types.InlineKeyboardButton('Створити пасіку', callback_data='create_apiary'))
-        else:
-            markup.add(types.InlineKeyboardButton('Створити пасіку', callback_data='create_apiary'))
+#     if get_token(chat_id) is None:
+#         markup.add(types.InlineKeyboardButton('Вхід', callback_data='login'))
+#         markup.add(types.InlineKeyboardButton('Реєстрація', callback_data='registration'))
+#     else:
+#         if check_beehive_exists(chat_id):  # Передаємо chat_id
+#             markup.add(types.InlineKeyboardButton('Переглянути пасіку', callback_data='view_apiary'))
+#             markup.add(types.InlineKeyboardButton('Створити пасіку', callback_data='create_apiary'))
+#         else:
+#             markup.add(types.InlineKeyboardButton('Створити пасіку', callback_data='create_apiary'))
 
-    bot.send_message(chat_id, "Виберіть опцію:", reply_markup=markup)
+#     bot.send_message(chat_id, "Виберіть опцію:", reply_markup=markup)
 
 @bot.callback_query_handler(func=lambda call: call.data in ['login', 'registration', 'create_apiary', 'view_apiary', 'back_in_menu'])
 def callback_handler(call):
