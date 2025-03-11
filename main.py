@@ -75,12 +75,11 @@ def callback_handler(call):
         send_welcome(call.message)
 
 if __name__ == "__main__":
-    bot.remove_webhook()  # Вимкнути старий вебхук (якщо він був налаштований)
-    bot.set_webhook(url=WEBHOOK_URL)  # Підключити новий вебхук
-    print(f"✔️ Вебхук налаштовано на URL: {WEBHOOK_URL}")
-    
-    print("🚀 Перехід в режим polling")
-    bot.infinity_polling()  # Або можна використовувати polling
+    bot.remove_webhook()  # Вимкнути старі вебхуки, якщо є
+    bot.set_webhook(url=WEBHOOK_URL)  # Установити новий вебхук
+    print(f"✔️ Вебхук налаштовано на: {WEBHOOK_URL}")
+    app.run(host="0.0.0.0", port=10000)
+
 
 # if __name__ == "__main__":
 #     print("✅ Запуск Flask-сервера...")
