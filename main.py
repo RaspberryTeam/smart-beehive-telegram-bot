@@ -13,22 +13,21 @@ bot = TeleBot(TOKEN)
 
 app = Flask(__name__)
 
-@app.route(WEBHOOK_PATH, methods=['POST'])
+@app.route('/webhook', methods=['POST'])
 def webhook():
+    print("🔥 Запит на /webhook отримано")  # Додали лог
     try:
         json_str = request.get_data().decode('UTF-8')
-        print(f"📩 Отримано запит: {json_str}")  # Лог вхідного запиту
+        print(f"📩 Отримано запит: {json_str}")
 
         update = types.Update.de_json(json_str)
-        print(f"🔄 Отримано оновлення: {update.to_dict()}")  # Лог оновлення
-
-        bot.process_new_updates([update])  # Обробка оновлення
-        print(f"✅ Оновлення передано боту")
+        bot.process_new_updates([update])
 
         return 'OK', 200
     except Exception as e:
-        print(f"❌ Помилка у webhook: {e}")  # Лог помилки
+        print(f"❌ Помилка: {e}")
         return 'Internal Server Error', 500
+
 
 
 @bot.message_handler(commands=['start'])
