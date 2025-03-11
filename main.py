@@ -17,15 +17,19 @@ app = Flask(__name__)
 def webhook():
     try:
         json_str = request.get_data().decode('UTF-8')
-        print(f"📩 Отримано запит: {json_str}")  # Лог запиту
+        print(f"📩 Отримано запит: {json_str}")  # Лог вхідного запиту
 
         update = types.Update.de_json(json_str)
-        bot.process_new_updates([update])
+        print(f"🔄 Отримано оновлення: {update.to_dict()}")  # Лог оновлення
+
+        bot.process_new_updates([update])  # Обробка оновлення
+        print(f"✅ Оновлення передано боту")
 
         return 'OK', 200
     except Exception as e:
         print(f"❌ Помилка у webhook: {e}")  # Лог помилки
         return 'Internal Server Error', 500
+
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
