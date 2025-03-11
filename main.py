@@ -1,15 +1,19 @@
 import os
 import json
 from flask import Flask, request
-from telebot import types
-from bot_config import bot
+from telebot import TeleBot, types
 
+# Завантаження змінних середовища
 TOKEN = os.getenv("BOT_TOKEN")
 WEBHOOK_URL = os.getenv("WEBHOOK_URL")
+WEBHOOK_PATH = f"/webhook/{TOKEN}"
+
+# Ініціалізація бота
+bot = TeleBot(TOKEN)
 
 app = Flask(__name__)
 
-@app.route('/webhook', methods=['POST'])
+@app.route(WEBHOOK_PATH, methods=['POST'])
 def webhook():
     try:
         json_str = request.get_data().decode('UTF-8')
@@ -22,8 +26,6 @@ def webhook():
     except Exception as e:
         print(f"❌ Помилка у webhook: {e}")  # Лог помилки
         return 'Internal Server Error', 500
-
-
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
@@ -63,5 +65,11 @@ def callback_handler(call):
         send_welcome(call.message)
 
 if __name__ == "__main__":
-    print("Запуск Flask-сервера...")
-    app.run(host="0.0.0.0", port=10000)
+    print("✅ Запуск Flask-сервера...")
+
+    # Встановлення вебхука
+    bot.remove_webhook()
+    bot.set_webhook(url=f"{WEBHOOK_URL}{WEBHOOK_PATH}")
+
+    # Запуск Flask
+    app.run(host="0.0.0.0", port=10000, use_reloader=False)
