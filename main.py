@@ -37,8 +37,13 @@ def webhook():
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-    chat_id = message.chat.id
-    bot.send_message(chat_id, "Привіт! Це тестове повідомлення.")
+    try:
+        chat_id = message.chat.id
+        bot.send_message(chat_id, "Привіт! Це тестове повідомлення.")
+        print("✅ Повідомлення відправлено.")
+    except Exception as e:
+        print(f"❌ Помилка при відправці повідомлення: {e}")
+
 
 # @bot.message_handler(commands=['start'])
 # def send_welcome(message):
