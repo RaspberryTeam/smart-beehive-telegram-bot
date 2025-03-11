@@ -11,13 +11,18 @@ app = Flask(__name__)
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
-    json_str = request.get_data().decode('UTF-8')
-    print(f"📩 Отримано запит: {json_str}")  # Додаємо логування у Flask
+    try:
+        json_str = request.get_data().decode('UTF-8')
+        print(f"📩 Отримано запит: {json_str}")  # Лог запиту
 
-    update = types.Update.de_json(json_str)
-    bot.process_new_updates([update])
+        update = types.Update.de_json(json_str)
+        bot.process_new_updates([update])
 
-    return 'OK', 200
+        return 'OK', 200
+    except Exception as e:
+        print(f"❌ Помилка у webhook: {e}")  # Лог помилки
+        return 'Internal Server Error', 500
+
 
 
 @bot.message_handler(commands=['start'])
