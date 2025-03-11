@@ -73,7 +73,7 @@ if __name__ == "__main__":
 
     # Встановлення вебхука
     bot.remove_webhook()
-    bot.set_webhook(url=f"{WEBHOOK_URL}{WEBHOOK_PATH}")
+    bot.set_webhook(url=f"{WEBHOOK_URL}/webhook")
 
     # Запуск Flask
     app.run(host="0.0.0.0", port=10000, use_reloader=False)
