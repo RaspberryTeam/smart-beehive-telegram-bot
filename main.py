@@ -83,18 +83,14 @@ def callback_handler(call):
     elif call.data == 'back_in_menu':
         send_welcome(call.message)
 
-if __name__ == '__main__':
-    print("Запуск бота в режимі polling...")
-    bot.polling(none_stop=True)
 
+if __name__ == "__main__":
+    print("✅ Запуск Flask-сервера...")
 
+    # Встановлення вебхука
+    bot.remove_webhook()
+    bot.set_webhook(url=f"{WEBHOOK_URL}")
 
-# if __name__ == "__main__":
-#     print("✅ Запуск Flask-сервера...")
+    port = int(os.environ.get("PORT", 10000))  # Використовуємо змінну середовища PORT
+    app.run(host="0.0.0.0", port=port)
 
-#     # Встановлення вебхука
-#     bot.remove_webhook()
-#     bot.set_webhook(url=f"{WEBHOOK_URL}")
-
-#     # Запуск Flask
-#     app.run(host="0.0.0.0", port=10000, use_reloader=False)
