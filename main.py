@@ -31,14 +31,13 @@ app = Flask(__name__)
 @app.route('/webhook', methods=['POST'])
 def webhook():
     json_str = request.get_data().decode('UTF-8')
-    update = types.Update.de_json(json_str)
+    update = telebot.types.Update.de_json(json_str)
 
-    if update.message and update.message.text == "/start":
-        print(f"Обробка вручну для {update.message.chat.id}")
-        bot.send_message(update.message.chat.id, "Ласкаво просимо!")
+    print("Отримано оновлення:", update)
+
+    bot.process_new_updates([update])  # Обробка через TeleBot
 
     return 'OK', 200
-
 
 # @bot.message_handler(commands=['start'])
 # def send_welcome(message):
