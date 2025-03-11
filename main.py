@@ -9,59 +9,38 @@ WEBHOOK_URL = os.getenv("WEBHOOK_URL")
 
 app = Flask(__name__)
 
-
-# @app.route("/set_webhook", methods=["GET"])
-#  def set_webhook():
-#      # Встановлюємо вебхук на нову URL-адресу
-#      success = bot.set_webhook(url=f"{WEBHOOK_URL}/webhook")
-#      if success:
-#          return "Webhook встановлено!", 200
-#      else:
-#          return "Помилка при встановленні вебхука", 400
-
-
-# @app.route("/webhook", methods=["POST"])
-# def webhook():
-#     json_str = request.get_data().decode("UTF-8")
-#     print("Отримано запит: ", json_str)  # Логування отриманого запиту
-#     update = types.Update.de_json(json_str)
-#     bot.process_new_updates([update])
-#     return "OK", 200
-
 @app.route('/webhook', methods=['POST'])
 def webhook():
     json_str = request.get_data().decode('UTF-8')
     update = types.Update.de_json(json_str)
 
+    print("Отримано оновлення:", update)  # Додаємо логування
+
     if update.message and update.message.text == "/start":
-        send_welcome(update.message)  # Викликати хендлер напряму
+        send_welcome(update.message)  # Викликаємо хендлер напряму
+
+    bot.process_new_updates([update])  # Запускаємо стандартну обробку
 
     return 'OK', 200
 
-
-# @bot.message_handler(commands=['start'])
-# def send_welcome(message):
-#     print(f"send_welcome() викликано для {message.chat.id}")  # Лог у консолі
-#     bot.send_message(message.chat.id, "Ласкаво просимо!")
-
-
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-    
     chat_id = message.chat.id
     markup = types.InlineKeyboardMarkup()
+    
     bot.send_message(chat_id, "Ласкаво просимо!")
+
     if get_token(chat_id) is None:
         markup.add(types.InlineKeyboardButton('Вхід', callback_data='login'))
         markup.add(types.InlineKeyboardButton('Реєстрація', callback_data='registration'))
     else:
-        if check_beehive_exists():
+        if check_beehive_exists(chat_id):  # Передаємо chat_id
             markup.add(types.InlineKeyboardButton('Переглянути пасіку', callback_data='view_apiary'))
             markup.add(types.InlineKeyboardButton('Створити пасіку', callback_data='create_apiary'))
         else:
             markup.add(types.InlineKeyboardButton('Створити пасіку', callback_data='create_apiary'))
 
-    bot.send_message(chat_id, "Ласкаво просимо!", reply_markup=markup)
+    bot.send_message(chat_id, "Виберіть опцію:", reply_markup=markup)
 
 @bot.callback_query_handler(func=lambda call: call.data in ['login', 'registration', 'create_apiary', 'view_apiary', 'back_in_menu'])
 def callback_handler(call):
