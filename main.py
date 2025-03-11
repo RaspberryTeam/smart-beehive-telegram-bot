@@ -83,11 +83,10 @@ def callback_handler(call):
     elif call.data == 'back_in_menu':
         send_welcome(call.message)
 
-if __name__ == "__main__":
-    bot.remove_webhook()  # Вимкнути старі вебхуки, якщо є
-    bot.set_webhook(url=WEBHOOK_URL)  # Установити новий вебхук
-    print(f"✔️ Вебхук налаштовано на: {WEBHOOK_URL}")
-    app.run(host="0.0.0.0", port=10000)
+if __name__ == '__main__':
+    print("Запуск бота в режимі polling...")
+    bot.polling(none_stop=True)
+
 
 
 # if __name__ == "__main__":
