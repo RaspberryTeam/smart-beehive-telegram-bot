@@ -10,14 +10,14 @@ WEBHOOK_URL = os.getenv("WEBHOOK_URL")
 app = Flask(__name__)
 
 
-@app.route("/set_webhook", methods=["GET"])
- def set_webhook():
-     # Встановлюємо вебхук на нову URL-адресу
-     success = bot.set_webhook(url=f"{WEBHOOK_URL}/webhook")
-     if success:
-         return "Webhook встановлено!", 200
-     else:
-         return "Помилка при встановленні вебхука", 400
+# @app.route("/set_webhook", methods=["GET"])
+#  def set_webhook():
+#      # Встановлюємо вебхук на нову URL-адресу
+#      success = bot.set_webhook(url=f"{WEBHOOK_URL}/webhook")
+#      if success:
+#          return "Webhook встановлено!", 200
+#      else:
+#          return "Помилка при встановленні вебхука", 400
 
 
 # @app.route("/webhook", methods=["POST"])
