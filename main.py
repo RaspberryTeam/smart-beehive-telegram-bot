@@ -13,6 +13,17 @@ bot = TeleBot(TOKEN)
 
 app = Flask(__name__)
 
+@bot.message_handler(commands=['start'])
+def send_welcome(message):
+    chat_id = message.chat.id
+    print(f"📬 Надсилаю привітальне повідомлення до чату {chat_id}")  # Логування
+    
+    try:
+        bot.send_chat_action(chat_id, "Привіт! Це тестове повідомлення.")
+        print("✅ Повідомлення надіслано")
+    except Exception as e:
+        print(f"❌ Помилка при надсиланні повідомлення: {e}")
+
 @app.route('/webhook', methods=['POST'])
 def webhook():
     print(f"🔑 BOT_TOKEN: {TOKEN}, webhook {WEBHOOK_URL}")  # Лог для перевірки
@@ -34,19 +45,6 @@ def webhook():
     except Exception as e:
         print(f"❌ Помилка: {e}")
         return 'Internal Server Error', 500
-
-
-@bot.message_handler(commands=['start'])
-def send_welcome(message):
-    chat_id = message.chat.id
-    print(f"📬 Надсилаю привітальне повідомлення до чату {chat_id}")  # Логування
-    
-    try:
-        bot.send_chat_action(chat_id, "Привіт! Це тестове повідомлення.")
-        print("✅ Повідомлення надіслано")
-    except Exception as e:
-        print(f"❌ Помилка при надсиланні повідомлення: {e}")
-
 
 
 # @bot.message_handler(commands=['start'])
