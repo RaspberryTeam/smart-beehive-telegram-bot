@@ -14,29 +14,26 @@ bot = TeleBot(TOKEN)
 app = Flask(__name__)
 
 @app.route('/webhook', methods=['POST'])
-def webhook():
-    try:
-        print("🔥 Запит на /webhook отримано")
-
-        json_str = request.get_data().decode('UTF-8')
-        if not json_str.strip():  # Перевіряємо, чи JSON порожній
-            print("❌ Порожній JSON у запиті!")
-            return 'Bad Request', 400
-
-        print(f"📩 Отримано запит: {json_str}")
-
-        update = types.Update.de_json(json_str)
-        print(f"🔄 Декодоване оновлення: {update}")
-
-        bot.process_new_updates([update])
-        print(f"✅ Оновлення передано боту")
-
-        return 'OK', 200
-    except Exception as e:
-        import traceback
-        print(f"❌ Помилка в webhook(): {e}")
-        print(traceback.format_exc())  # Виведе детальний traceback
-        return 'Internal Server Error', 500
+ def webhook():
+     print(f"🔑 BOT_TOKEN: {TOKEN}, webhook {WEBHOOK_URL}")  # Лог для перевірки
+ 
+     print("🔥 Запит на /webhook отримано")
+     try:
+         json_str = request.get_data().decode('UTF-8')
+         print(f"📩 Отримано запит: {json_str}")
+ 
+         update = types.Update.de_json(json_str)
+         print(f"🔄 Декодоване оновлення: {update}")  # Лог оновлення
+ 
+         print("✅ Обробка оновлення...")  # Лог перед передачею оновлення в бот
+         bot.process_new_updates([update])
+         print(f"✅ Оновлення передано боту")
+ 
+ 
+         return 'OK', 200
+     except Exception as e:
+         print(f"❌ Помилка: {e}")
+         return 'Internal Server Error', 500
 
 
 
