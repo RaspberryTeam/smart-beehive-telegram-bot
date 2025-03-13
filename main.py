@@ -14,7 +14,7 @@ app = Flask(__name__)
 
 @app.route(f"/{TOKEN}", methods=["POST"])
 def webhook():
-    print(f"Отримано запит до вебхука") #Додано лог
+    print(f"Отримано запит до вебхука, {TOKEN}") #Додано лог
     try:
         json_str = request.get_data().decode("UTF-8")
         update = types.Update.de_json(json_str)
