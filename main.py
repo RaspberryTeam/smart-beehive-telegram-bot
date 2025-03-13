@@ -12,8 +12,8 @@ WEBHOOK_URL = os.getenv("WEBHOOK_URL")
 # SERVER_URL = os.environ.get("SERVER_URL")
 # SERVER_CREATE_APIARY = os.environ.get("SERVER_CREATE_APIARY")
 
-if not BOT_TOKEN or not SERVER_URL or not SERVER_CREATE_APIARY:
-    raise ValueError("Необхідно встановити змінні середовища BOT_TOKEN, SERVER_URL та SERVER_CREATE_APIARY")
+# if not BOT_TOKEN or not SERVER_URL or not SERVER_CREATE_APIARY:
+#     raise ValueError("Необхідно встановити змінні середовища BOT_TOKEN, SERVER_URL та SERVER_CREATE_APIARY")
 
 bot = telebot.TeleBot(BOT_TOKEN)
 app = Flask(__name__)
