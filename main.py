@@ -14,52 +14,29 @@ app = Flask(__name__)
 
 @app.route(f"/{TOKEN}", methods=["POST"])
 def webhook():
-    json_str = request.get_data().decode("UTF-8")
-    update = types.Update.de_json(json_str)
-    bot.process_new_updates([update])
-    return "OK", 200
-
-# @app.route('/webhook', methods=['POST'])
-# def webhook():
-#     print(f" BOT_TOKEN: {TOKEN}, webhook {WEBHOOK_URL}")
-#     print(" Запит на /webhook отримано")
-#     try:
-#         json_str = request.get_data().decode('UTF-8')
-#         print(f" Отримано запит: {json_str}")
-
-#         update = types.Update.de_json(json_str)
-#         print(f" Декодоване оновлення: {update}")
-
-#         if update.message:
-#             chat_id = update.message.chat.id
-#             bot.send_message(chat_id, "Отримано повідомлення!")
-#         elif update.callback_query:
-#             chat_id = update.callback_query.message.chat.id
-#             bot.send_message(chat_id, "Отримано callback!")
-
-#         bot.process_new_updates([update])
-#         print(f"✅ Оновлення передано боту")
-
-#         return 'OK', 200
-#     except Exception as e:
-#         print(f"❌ Помилка: {e}")
-#         return 'Internal Server Error', 500
-
-
-
+    print(f"Отримано запит до вебхука") #Додано лог
+    try:
+        json_str = request.get_data().decode("UTF-8")
+        update = types.Update.de_json(json_str)
+        print(f"Отримано оновлення: {update}") #Додано лог
+        bot.process_new_updates([update])
+        return "OK", 200
+    except Exception as e:
+        print(f"Помилка в вебхуку: {e}") #Додано лог
+        return 'Internal Server Error', 500
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
     chat_id = message.chat.id
-    print(f" Надсилаю привітальне повідомлення до чату {chat_id}")
+    print(f"Надсилаю привітальне повідомлення до чату {chat_id}")
     try:
         bot.send_message(chat_id, "Привіт! Це тестове повідомлення.")
-        print("✅ Повідомлення надіслано")
+        print("Повідомлення надіслано")
     except Exception as e:
-        print(f"❌ Помилка при надсиланні повідомлення: {e}")
+        print(f"Помилка при надсиланні повідомлення: {e}")
 
 if __name__ == "__main__":
-    print("✅ Запуск Flask-сервера...")
+    print("Запуск Flask-сервера...")
     bot.remove_webhook()
     bot.set_webhook(url=f"{WEBHOOK_URL}")
     port = int(os.environ.get("PORT", 10000))
