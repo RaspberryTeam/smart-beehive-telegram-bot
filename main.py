@@ -27,13 +27,13 @@ def webhook():
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-    chat_id = message.chat.id
+    # chat_id = message.chat.id
     print(f"Надсилаю привітальне повідомлення до чату {chat_id}")
-    try:
-        bot.send_message(chat_id, "Привіт! Це тестове повідомлення.")
-        print("Повідомлення надіслано")
-    except Exception as e:
-        print(f"Помилка при надсиланні повідомлення: {e}")
+    # try:
+    #     bot.send_message(chat_id, "Привіт! Це тестове повідомлення.")
+    #     print("Повідомлення надіслано")
+    # except Exception as e:
+    #     print(f"Помилка при надсиланні повідомлення: {e}")
 
 if __name__ == "__main__":
     print("Запуск Flask-сервера...")
