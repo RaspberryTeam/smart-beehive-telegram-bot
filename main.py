@@ -5,7 +5,7 @@ from telebot import TeleBot, types
 
 # Завантаження змінних середовища
 TOKEN = os.getenv("BOT_TOKEN")
-WEBHOOK_URL = os.getenv("WEBHOOK_URL")
+WEBHOOK_URL = f"{os.getenv("WEBHOOK_URL")}/{TOKEN}"
 
 # Ініціалізація бота
 bot = TeleBot(TOKEN)
