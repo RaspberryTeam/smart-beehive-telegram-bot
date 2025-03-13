@@ -27,7 +27,7 @@ def webhook():
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
-    print(f"🚀 Отримано команду /start від {message.chat.id}")
+    print(f" Отримано команду /start від {message.chat.id}")
     chat_id = message.chat.id
     markup = types.InlineKeyboardMarkup()
 
@@ -44,6 +44,27 @@ def send_welcome(message):
             markup.add(types.InlineKeyboardButton('Створити пасіку', callback_data='create_apiary'))
 
     bot.send_message(chat_id, "Виберіть опцію:", reply_markup=markup)
+    print(f"Функція send_welcome завершена для chat_id: {chat_id}") # Додано лог
+
+# @bot.message_handler(commands=['start'])
+# def send_welcome(message):
+#     print(f"🚀 Отримано команду /start від {message.chat.id}")
+#     chat_id = message.chat.id
+#     markup = types.InlineKeyboardMarkup()
+
+#     bot.send_message(chat_id, "Ласкаво просимо!")
+
+#     if get_token(chat_id) is None:
+#         markup.add(types.InlineKeyboardButton('Вхід', callback_data='login'))
+#         markup.add(types.InlineKeyboardButton('Реєстрація', callback_data='registration'))
+#     else:
+#         if check_beehive_exists(chat_id):  # Передаємо chat_id
+#             markup.add(types.InlineKeyboardButton('Переглянути пасіку', callback_data='view_apiary'))
+#             markup.add(types.InlineKeyboardButton('Створити пасіку', callback_data='create_apiary'))
+#         else:
+#             markup.add(types.InlineKeyboardButton('Створити пасіку', callback_data='create_apiary'))
+
+#     bot.send_message(chat_id, "Виберіть опцію:", reply_markup=markup)
 
 if __name__ == "__main__":
     print("Запуск Flask-сервера...")
