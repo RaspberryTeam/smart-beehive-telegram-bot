@@ -1,73 +1,59 @@
 import os
+import json
 from flask import Flask, request
-import telebot
-from telebot import types
-from apiary import create_apiary, check_beehive_exists, view_apiary
-from jwt_token import get_token
-from login import process_login
-from registration import process_registration
+from telebot import TeleBot, types
 
-BOT_TOKEN = os.environ.get("BOT_TOKEN")
+# Завантаження змінних середовища
+TOKEN = os.getenv("BOT_TOKEN")
 WEBHOOK_URL = os.getenv("WEBHOOK_URL")
-# SERVER_URL = os.environ.get("SERVER_URL")
-# SERVER_CREATE_APIARY = os.environ.get("SERVER_CREATE_APIARY")
 
-# if not BOT_TOKEN or not SERVER_URL or not SERVER_CREATE_APIARY:
-#     raise ValueError("Необхідно встановити змінні середовища BOT_TOKEN, SERVER_URL та SERVER_CREATE_APIARY")
+# Ініціалізація бота
+bot = TeleBot(TOKEN)
 
-bot = telebot.TeleBot(BOT_TOKEN)
 app = Flask(__name__)
 
-@app.route(f"/{BOT_TOKEN}", methods=["POST"])
+@app.route('/webhook', methods=['POST'])
 def webhook():
-    update = telebot.types.Update.de_json(request.stream.read().decode("utf-8"))
-    bot.process_new_updates([update])
-    return "OK", 200
+    print(f" BOT_TOKEN: {TOKEN}, webhook {WEBHOOK_URL}")
+    print(" Запит на /webhook отримано")
+    try:
+        json_str = request.get_data().decode('UTF-8')
+        print(f" Отримано запит: {json_str}")
+
+        update = types.Update.de_json(json_str)
+        print(f" Декодоване оновлення: {update}")
+
+        if update.message:
+            chat_id = update.message.chat.id
+            bot.send_message(chat_id, "Отримано повідомлення!")
+        elif update.callback_query:
+            chat_id = update.callback_query.message.chat.id
+            bot.send_message(chat_id, "Отримано callback!")
+
+        bot.process_new_updates([update])
+        print(f"✅ Оновлення передано боту")
+
+        return 'OK', 200
+    except Exception as e:
+        print(f"❌ Помилка: {e}")
+        return 'Internal Server Error', 500
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
     chat_id = message.chat.id
-    markup = types.InlineKeyboardMarkup()
-
-    if get_token(chat_id) is None:
-        markup.add(types.InlineKeyboardButton('Вхід', callback_data='login'))
-        markup.add(types.InlineKeyboardButton('Реєстрація', callback_data='registration'))
-    else:
-        if check_beehive_exists():
-            markup.add(types.InlineKeyboardButton('Переглянути пасіку', callback_data='view_apiary'))
-            markup.add(types.InlineKeyboardButton('Створити пасіку', callback_data='create_apiary'))
-        else:
-            markup.add(types.InlineKeyboardButton('Створити пасіку', callback_data='create_apiary'))
-
-    bot.send_message(chat_id, "Ласкаво просимо!", reply_markup=markup)
-
-@bot.callback_query_handler(func=lambda call: call.data in ['login', 'registration', 'create_apiary', 'view_apiary', 'back_in_menu'])
-def callback_handler(call):
-    chat_id = call.message.chat.id
-    message_id = call.message.message_id
-
-    if call.data == 'login':
-        bot.delete_message(chat_id, message_id)
-        process_login(call.message)
-    elif call.data == 'registration':
-        bot.delete_message(chat_id, message_id)
-        process_registration(call.message)
-    elif call.data == 'create_apiary':
-        bot.delete_message(chat_id, message_id)
-        create_apiary(call.message)
-    elif call.data == 'view_apiary':
-        bot.delete_message(chat_id, message_id)
-        view_apiary(call.message)
-    elif call.data == 'back_in_menu':
-        bot.delete_message(chat_id, message_id)
-        send_welcome(call.message)
+    print(f" Надсилаю привітальне повідомлення до чату {chat_id}")
+    try:
+        bot.send_message(chat_id, "Привіт! Це тестове повідомлення.")
+        print("✅ Повідомлення надіслано")
+    except Exception as e:
+        print(f"❌ Помилка при надсиланні повідомлення: {e}")
 
 if __name__ == "__main__":
-    print("Бот запущено...")
-    # Встановлення вебхука
-    bot.set_webhook(url=f"{WEBHOOK_URL}/{BOT_TOKEN}")
-    # Запуск вебсервера
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
+    print("✅ Запуск Flask-сервера...")
+    bot.remove_webhook()
+    bot.set_webhook(url=f"{WEBHOOK_URL}")
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
 
 # import os
 # import json
