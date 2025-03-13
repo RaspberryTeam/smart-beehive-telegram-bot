@@ -12,38 +12,40 @@ bot = TeleBot(TOKEN)
 
 app = Flask(__name__)
 
-@app.route('/webhook', methods=['POST'])
-def webhook():
-    print(f" BOT_TOKEN: {TOKEN}, webhook {WEBHOOK_URL}")
-    print(" Запит на /webhook отримано")
-    try:
-        json_str = request.get_data().decode('UTF-8')
-        print(f" Отримано запит: {json_str}")
-
-        update = types.Update.de_json(json_str)
-        print(f" Декодоване оновлення: {update}")
-
-        if update.message:
-            chat_id = update.message.chat.id
-            bot.send_message(chat_id, "Отримано повідомлення!")
-        elif update.callback_query:
-            chat_id = update.callback_query.message.chat.id
-            bot.send_message(chat_id, "Отримано callback!")
-
-        bot.process_new_updates([update])
-        print(f"✅ Оновлення передано боту")
-
-        return 'OK', 200
-    except Exception as e:
-        print(f"❌ Помилка: {e}")
-        return 'Internal Server Error', 500
-
 @app.route(f"/{TOKEN}", methods=["POST"])
 def webhook():
     json_str = request.get_data().decode("UTF-8")
     update = types.Update.de_json(json_str)
     bot.process_new_updates([update])
     return "OK", 200
+
+# @app.route('/webhook', methods=['POST'])
+# def webhook():
+#     print(f" BOT_TOKEN: {TOKEN}, webhook {WEBHOOK_URL}")
+#     print(" Запит на /webhook отримано")
+#     try:
+#         json_str = request.get_data().decode('UTF-8')
+#         print(f" Отримано запит: {json_str}")
+
+#         update = types.Update.de_json(json_str)
+#         print(f" Декодоване оновлення: {update}")
+
+#         if update.message:
+#             chat_id = update.message.chat.id
+#             bot.send_message(chat_id, "Отримано повідомлення!")
+#         elif update.callback_query:
+#             chat_id = update.callback_query.message.chat.id
+#             bot.send_message(chat_id, "Отримано callback!")
+
+#         bot.process_new_updates([update])
+#         print(f"✅ Оновлення передано боту")
+
+#         return 'OK', 200
+#     except Exception as e:
+#         print(f"❌ Помилка: {e}")
+#         return 'Internal Server Error', 500
+
+
 
 
 @bot.message_handler(commands=['start'])
