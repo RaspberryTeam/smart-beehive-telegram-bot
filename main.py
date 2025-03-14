@@ -18,16 +18,20 @@ def home():
 
 @app.route(f"/{TOKEN}", methods=["POST"])
 def webhook():
-    print(f"Отримано запит до вебхука, {TOKEN, WEBHOOK_URL}") #Додано лог
-    try:
-        json_str = request.get_data().decode("UTF-8")
-        update = types.Update.de_json(json_str)
-        print(f"Отримано оновлення: {update}") #Додано лог
-        bot.process_new_updates([update])
-        return "OK", 200
-    except Exception as e:
-        print(f"Помилка в вебхуку: {e}") #Додано лог
-        return 'Internal Server Error', 500
+        return 'Webhook work', 200
+
+# @app.route(f"/{TOKEN}", methods=["POST"])
+# def webhook():
+#     print(f"Отримано запит до вебхука, {TOKEN, WEBHOOK_URL}") #Додано лог
+#     try:
+#         json_str = request.get_data().decode("UTF-8")
+#         update = types.Update.de_json(json_str)
+#         print(f"Отримано оновлення: {update}") #Додано лог
+#         bot.process_new_updates([update])
+#         return "OK", 200
+#     except Exception as e:
+#         print(f"Помилка в вебхуку: {e}") #Додано лог
+#         return 'Internal Server Error', 500
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
