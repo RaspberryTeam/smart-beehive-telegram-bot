@@ -12,6 +12,10 @@ bot = TeleBot(TOKEN)
 
 app = Flask(__name__)
 
+@app.route("/", methods=["GET"])
+def home():
+    return "Сервер працює", 200
+
 @app.route(f"/{TOKEN}", methods=["POST"])
 def webhook():
     print(f"Отримано запит до вебхука, {TOKEN, WEBHOOK_URL}") #Додано лог
