@@ -16,7 +16,7 @@ app = Flask(__name__)
 def home():
     return "Сервер працює", 200
 
-@app.route(f"/{TOKEN}", methods=["POST"])
+@app.route(f"/{TOKEN}", methods=["GET"])
 def webhook():
         return 'Webhook work', 200
 
